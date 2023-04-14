@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}My Blog{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  </head>
+  <body style="background-color: rgb(175, 164, 164);">
+    
+    <nav class="navbar">
+      <div class="container">
+        <a class="navbar-brand" href="#">Social Network</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'post_list' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                  <i class="fas fa-search"></i>
+                </button>
+              </form>
+            </li>
+            <li class="nav-item"> 
+              <a class="nav-link" href="#">
+                <i class="fas fa-door-open"></i> Log in
+              </a>
+            </li>
+            <li class="nav-item"> 
+              <a class="nav-link" href="#">
+                <i class="fas fa-door-open"></i> Sign in
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+      
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <h4>About My Blog</h4>
+            <p>My Blog is a platform for sharing my thoughts and experiences on various topics.</p>
+          </div>
+          <div class="col-md-6">
+            <h4>Contact Us</h4>
+            <ul class="list-unstyled">
+              <li><i class="fa fa-map-marker"></i> 123 Main St, Anytown, USA</li>
+              <li><i class="fa fa-phone"></i> +1 555-123-4567</li>
+              <li><i class="fa fa-envelope"></i> info@myblog.com</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+
+

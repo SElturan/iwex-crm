@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+<h1>My First Template</h1>
+
+{% block content %}
+
+    <p>{{ post.id }}</p>
+    <p>{{ post.author }}</p>
+    <p>{{ post.duration }}</p>
+    <p>{{ post.image }}</p>
+    <p>{{ post.created_at }}</p>
+    <p>{{ post.updated_at }}</p>
+{% endblock %}
