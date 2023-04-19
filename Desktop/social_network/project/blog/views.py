@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from .models import Post
 from .models import *
-
 # templates
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
@@ -9,26 +8,43 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.urls import reverse
 from .forms import *
-
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from rest_framework import generics, filters, status
 from .serializers import *
 import django_filters
-
 #auth
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-
 # auth
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from rest_framework.response import Response 
-
+from rest_framework.response import Response
 #user
 from django.contrib.auth.models import User
-
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
+#
+# Celery
+from .forms import GenerateRandomUserForm
+from .tasks import create_random_user_accounts
+from django.views.generic.edit import FormView
+from django.contrib import messages
+from django.shortcuts import redirect
+from .serializers import *
 
+
+# celery___________________________________________________________________
+
+class GenerateRandomUserView(FormView):
+    template_name = 'posts/generate_random_users.html'
+    form_class = GenerateRandomUserForm
+
+    def form_valid(self, form):
+        total = form.cleaned_data.get('total')
+        create_random_user_accounts(total)
+        messages.success(self.request, 'We are generating your random users! Wait a moment and refresh this page.')
+        return redirect('users_list')
+
+# ___
 
 class RegistrationView(CreateAPIView):
     serializer_class = UserRegistrationSerializers
