@@ -12,37 +12,23 @@ User = get_user_model()
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(max_length=100, required=True)
-    password2 = serializers.CharField(max_length=100, required=True)
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'password2',)
-        extra_kwargs = {
-            'password': {'write_only': True},
-        }
-
-    def validate(self, data):
-        if data['password'] != data['password2']:
-            raise serializers.ValidationError("Пароли не совпадают.")
-        return data
-    
+        fields = ('email',)
 
 
-    def create(self, validated_data):
-        user = User.objects.create_user(
-            email=validated_data['email'],
-            password=validated_data['password']
-        )
-
-        return user
 
 class VerifyEmailSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     verification_code = serializers.CharField(required=True, style={'input_type': 'verification_code'})
 
 
-
+class SetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(required=True, style={'input_type': 'password'})
+    password_confirm = serializers.CharField(required=True, style={'input_type': 'password'})
+    
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

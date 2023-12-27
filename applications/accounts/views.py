@@ -32,13 +32,18 @@ class RegistrationAPIView(generics.CreateAPIView):
             user = User.objects.filter(email=serializer.data['email']).first()
             if user is not None:
                 return Response({"error": "Пользователь уже существует"}, status=status.HTTP_400_BAD_REQUEST)
-            user = User.objects.create_user(
-                email=serializer.data['email'],
-                password=serializer.data['password']
-            )
             
+   
+            user = User.objects.create(
+                email=serializer.data['email'],
+                
+                
+            )
+    
             verification_code = randint(1000, 9999)
             user.verification_code = verification_code
+            verification_code_created_at = timezone.now()
+            user.verification_code_created_at = verification_code_created_at
             user.save()
             context = {
                 'verification_code': verification_code,
@@ -54,10 +59,11 @@ class RegistrationAPIView(generics.CreateAPIView):
             print("ok")
 
             return Response({
-                "messsage": "Успешная регистрация",
                 "user": user.email,
+                "status": status.HTTP_201_CREATED
             })
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
@@ -65,6 +71,7 @@ class VerifyEmailAPIView(APIView):
     serializer_class = VerifyEmailSerializer
     queryset = User.objects.all()  
 
+    @swagger_auto_schema(request_body=VerifyEmailSerializer)
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
@@ -75,20 +82,50 @@ class VerifyEmailAPIView(APIView):
                 return Response({"error": "Пользователь не найден"}, status=status.HTTP_404_NOT_FOUND)
             if user.verification_code != verification_code:
                 return Response({"error": "Неверный код"}, status=status.HTTP_400_BAD_REQUEST)
+            if user.verification_code_created_at + timezone.timedelta(minutes=5) < timezone.now():
+                return Response({"error": "Код истек"}, status=status.HTTP_400_BAD_REQUEST)
+            
             user.is_active = True
             user.is_verified_email = True
             user.verification_code = None
             user.save()
+            return Response({
+                "status": status.HTTP_200_OK,
+                "user": user.email,
+
+            })
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
+class SetPasswordAPIView(APIView):
+    serializer_class = SetPasswordSerializer
+
+    @swagger_auto_schema(request_body=SetPasswordSerializer)
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            email = serializer.data['email']
+            password = serializer.data['password']
+            password_confirm = serializer.data['password_confirm']
+            user = User.objects.filter(email=email).first()
+            if password != password_confirm:
+                return Response({"error": "Пароли не совпадают"}, status=status.HTTP_400_BAD_REQUEST)
+            user = User.objects.filter(email=serializer.data['email']).first()
+            if user is None:
+                return Response({"error": "Пользователь не найден"}, status=status.HTTP_404_NOT_FOUND)
+            if not user.is_verified_email:
+                return Response({"error": "Почта не подтверждена"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            user.set_password(password)
+            user.save()
             refresh = RefreshToken.for_user(user)
             return Response({
-                "messsage": "Почта подтверждена",
+                "status": status.HTTP_200_OK,
                 "user": user.email,
                 "refresh": str(refresh),
                 "access": str(refresh.access_token),
             })
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        
 
 class UserLoginView(generics.CreateAPIView):
     serializer_class = UserLoginSerializer
