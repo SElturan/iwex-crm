@@ -33,17 +33,15 @@ class RegistrationAPIView(generics.CreateAPIView):
             if user is not None:
                 return Response({"error": "Пользователь уже существует"}, status=status.HTTP_400_BAD_REQUEST)
             
-   
             user = User.objects.create(
                 email=serializer.data['email'],
-                
-                
+
             )
-    
             verification_code = randint(1000, 9999)
             user.verification_code = verification_code
             verification_code_created_at = timezone.now()
             user.verification_code_created_at = verification_code_created_at
+            
             user.save()
             context = {
                 'verification_code': verification_code,
@@ -52,6 +50,7 @@ class RegistrationAPIView(generics.CreateAPIView):
           
             html_message = render_to_string('email_template.html', context)
             
+
           
             subject = 'Подтверждение регистрации'
             recipient_list = [user.email]  
