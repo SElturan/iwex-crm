@@ -241,6 +241,10 @@ def is_staff_or_superuser(user):
 
 
 class Payment(models.Model):
+    FULLY_PAID_CHOICES = [
+        ('ДА', _('ДА')),
+        ('НЕТ', _('НЕТ')),
+    ]
     user = models.ForeignKey(Profile, verbose_name=_('Соискатель'), related_name='payments', on_delete=models.CASCADE)
     total_amount = models.IntegerField(_('Общая сумма'), blank=True, null=True)
     total_amount_in_words = models.CharField(_('Общая сумма прописью'), max_length=255, blank=True)
@@ -251,6 +255,7 @@ class Payment(models.Model):
     final_fee = models.IntegerField(_('Окончательный взнос'), blank=True, null=True)
     final_fee_in_words = models.CharField(_('Окончательный взнос прописью'), max_length=255, blank=True)
     debt = models.IntegerField(_('Долг'), blank=True, null=True)
+    fully_paid = models.CharField(_('Полностью оплатил'), max_length=3, choices=FULLY_PAID_CHOICES, blank=True, null=True)
     debt_in_words = models.CharField(_('Долг прописью'), max_length=255, blank=True)
     payment_date = models.DateTimeField(_('Дата оплаты'), blank=True, null=True)
     payment_accepted_by = models.ForeignKey(User, verbose_name=_('Оплату принял'), related_name='payments_accepted', on_delete=models.CASCADE,blank=True, null=True)
@@ -444,3 +449,30 @@ def is_staff_or_superuser(user_id):
     if not user.is_staff and not user.is_superuser:
         raise ValidationError("Only staff or superuser can be assigned as 'Оплату принял'")
 
+# class Documents(models.Model):
+#     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='document', verbose_name=_('Соискатель'))
+#     study_certificate = models.FileField(_('Справка с места учебы'), upload_to=user_directory_path, blank=True)
+#     study_certificate_embassy = models.FileField(_('Справка с места учебы для посольства'), upload_to=user_directory_path, blank=True)
+#     study_certificate_translate_embassy = models.FileField(_('Перевод справки с места учебы для посольства'), upload_to=user_directory_path, blank=True)
+#     photo_for_schengen = models.FileField(_('Фото на шенген 3.5x4.5'), upload_to=user_directory_path, blank=True, validators=[validate_image_file_extension, ])
+#     zagranpassport_copy = models.FileField(_('Загранпаспорт'), upload_to=user_directory_path, blank=True)
+#     passport_copy = models.FileField(_('Копия ID'), upload_to=user_directory_path, blank=True)
+#     fluorography_express = models.FileField(_('Флюрография регистрация'), upload_to=user_directory_path, blank=True)
+#     fluorography = models.FileField(_('Флюрография посольство'), upload_to=user_directory_path, blank=True)
+#     immatrikulation = models.FileField(_('Immatrikulation с печатью университета'), upload_to=user_directory_path, blank=True)
+#     transcript = models.FileField(_('Транскрипт оригинал'), upload_to=user_directory_path, blank=True)
+#     transcript_translate = models.FileField(_('Перевод транскрипта'), upload_to=user_directory_path, blank=True)
+#     bank_statement = models.FileField(_('Выписка с банка'), upload_to=user_directory_path, blank=True)
+#     conduct_certificate = models.FileField(_('Справка о несудимости'), upload_to=user_directory_path, blank=True)
+#     mentaldispanser_certificate = models.FileField(_('Справка с психдиспансера'), upload_to=user_directory_path, blank=True)
+#     drugdispanser_certificate = models.FileField(_('Справка с наркодиспансера'), upload_to=user_directory_path, blank=True)
+#     parental_permission = models.FileField(_('Разрешение от родителей'), upload_to=user_directory_path, blank=True)
+#     bank_details = models.FileField(_('Реквизиты банка'), upload_to=user_directory_path, blank=True, null=True)
+#     visa_file = models.FileField(_('Скан визы'), upload_to=user_directory_path, blank=True, null=True)
+
+#     def __str__(self):
+#         return f'{self.user} - Документ #{self.id}'
+
+#     class Meta:
+#         verbose_name = _('Документ')
+#         verbose_name_plural = _('Документы')

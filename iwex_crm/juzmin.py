@@ -2,12 +2,10 @@ JAZZMIN_SETTINGS = {
     "site_title": "IWEX",
     "site_header": "IWEX",
     "site_brand": "IWEX-crm",
-   
     # Logo to use for your site, must be present in static files, used for brand on top left
     "site_logo": "image/iwex_crm_logo.png",
     # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
     "login_logo": "image/iwex_1.svg",
-   
     # Logo to use for login form in dark themes (defaults to login_logo)
     "login_logo_dark": None,
     # CSS classes that are applied to the logo above
@@ -53,8 +51,6 @@ JAZZMIN_SETTINGS = {
         },
         {"model": "auth.user"},
     ],
-
-
     #############
     # Side Menu #
     #############
@@ -88,26 +84,31 @@ JAZZMIN_SETTINGS = {
         "admin.LogEntry": "fas fa-file",
         "admin": "fas fa-user-cog",
         "authtoken": "fas fa-key",
-        "UserVisitAppConfig": "fas fa-book", 
+        "UserVisitAppConfig": "fas fa-book",
         "Accounts": "fas fa-user",
         "Accounts.Payment": "fas fa-credit-card",
         "Accounts.User": "fas fa-users",
         "Accounts.Profile": "fas fa-address-card",
-        "Accounts.Rating":"fas fa-star",
-        "Accounts.Review":"fas fa-pen-alt",
-        "Accounts.WorkExperience":"fas fa-briefcase",
+        "Accounts.University": "fas fa-graduation-cap",
+        "Accounts.PassportAndTerm": "fas fa-passport",
+        "Accounts.Rating": "fas fa-star",
+        "Accounts.Review": "fas fa-pen-alt",
+        "Accounts.WorkExperience": "fas fa-briefcase",
         "Common": "fas fa-wrench",
         "Common.SiteSettings": "fas fa-cogs",
         "Common.FooterLink": "fas fa-info-circle",
+        "Common.Logo": "fas fa-bolt",
         "Core": "fas fa-globe",
         "Core.Vacancy": "fas fa-suitcase",
+        "Core.Country": "fas fa-map-marker-alt",
+        "Core.Favorite": "fas fa-bookmark",
+        "Core.Interviews": "fas fa-user-tie",
         "Core.EmployerCompany": "fas fa-users",
-        "Core.City":"fas fa-city",
-        "Core.Branch":"fas fa-code-branch",
-        "Core.PositionEmployee":"fas fa-user-tie",
-        "Core.Invitation":"fas fa-handshake",
-        "Core.ReviewBranch":"fas fa-comment"
-       
+        "Core.City": "fas fa-city",
+        "Core.Branch": "fas fa-code-branch",
+        "Core.PositionEmployee": "fas fa-user-tie",
+        "Core.Invitation": "fas fa-handshake",
+        "Core.ReviewBranch": "fas fa-comment",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
@@ -116,7 +117,7 @@ JAZZMIN_SETTINGS = {
     # Related Modal #
     #################
     # Use modals instead of popups
-    "related_modal_active": False,
+    "related_modal_active": True,
     #############
     # UI Tweaks #
     ############## Relative paths to custom CSS/JS scripts (must be present in static files)
@@ -142,7 +143,7 @@ JAZZMIN_SETTINGS = {
         "auth.group": "vertical_tabs",
     },
     # Add a language dropdown into the admin
-   "language_chooser": True,
+    "language_chooser": True,
 }
 
 JAZZMIN_UI_TWEAKS = {
@@ -173,11 +174,11 @@ JAZZMIN_UI_TWEAKS = {
         "info": "btn-info",
         "warning": "btn-warning",
         "danger": "btn-danger",
-        "success": "btn-success"
+        "success": "btn-success",
     },
-    "actions_sticky_top": True
+    "actions_sticky_top": True,
 }
 AUTHENTICATION_BACKENDS = [
     # Другие бекенды...
-    'applications.accounts.backends.UnhashedPasswordBackend',
+    "applications.accounts.backends.UnhashedPasswordBackend",
 ]
