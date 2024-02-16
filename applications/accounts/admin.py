@@ -117,6 +117,7 @@ class UniversityAdmin(admin.ModelAdmin, ExportAdminMixin):
 
 admin.site.register(University, UniversityAdmin)
 
+
 class UniversityInline(admin.StackedInline):  
     model = University
     extra = 1
@@ -174,21 +175,29 @@ class PaymentAdmin(admin.ModelAdmin, ExportAdminMixin):
 
 admin.site.register(Payment, PaymentAdmin)
 
-class Payment(admin.StackedInline): 
+class PaymentAdminInline(admin.StackedInline): 
     model = Payment
     extra = 1
 
 
-class Deal(admin.StackedInline):
+class DealInline(admin.StackedInline):
     model = Deal
     extra = 1
+
+
+class WorkExperienceInline(admin.StackedInline):
+    model = WorkExperience
+    extra = 1
+
+
 
 @admin.register(Profile)
 class ProfileAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportAdminMixin):
 
     list_display = (
         'id', 'user', 'first_name', 'last_name', 'nationality_ru',
-        'german', 'english', 'russian',
+        'german', 'german_level',
+        'english', 'english_level',
     )
 
     search_fields = ('user', 'nationality_ru', 'gender_ru', 
@@ -206,7 +215,11 @@ class ProfileAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportAdminMixin):
             'birth_country_de','birth_country_en','birth_country_ru',  
             'birth_region_de','birth_region_en','birth_region_ru',  
             'date_of_birth', 'phone', 'whatsapp_phone_number',
-            'german', 'english', 'russian',
+            'german', 'german_level',
+            'english', 'english_level', 
+            'russian', 'russian_level', 
+            'turkish', 'turkish_level', 
+            'chinese', 'chinese_level',
         )}),
     )
 
@@ -245,7 +258,8 @@ class ProfileAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportAdminMixin):
 
     inlines = [
         UniversityInline, PassportAndTermInline, 
-        Payment, Deal,]  # Добавляем в профиль инлайн университета
+        PaymentAdminInline, DealInline, WorkExperienceInline
+        ]
     
 
 

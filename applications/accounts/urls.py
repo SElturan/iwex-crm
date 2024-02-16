@@ -14,6 +14,7 @@ urlpatterns = [
     path('profile-detail/<int:id>/', ProfileDetailView.as_view(), name='profile-list'),
     path('profiles-list-filter/<int:pk>/', ProfileFilterListView.as_view(), name='profile-list-all'),
     path('profile-list/', ProfileListView.as_view(), name='profile-list'),
-
+    # WorkExperience
+    path('workexperience/', WorkexperienceView.as_view(), name='work-experience'),
     
 ]

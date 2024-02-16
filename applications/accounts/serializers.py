@@ -102,9 +102,10 @@ class ProfileSerializer(serializers.ModelSerializer):
             'date_of_birth', 
             'phone', 
             'whatsapp_phone_number',
-            'german', 
-            'english', 
-            'russian',
+            'english', 'english_level', 
+            'russian', 'russian_level', 
+            'turkish', 'turkish_level', 
+            'chinese', 'chinese_level',
             'universities',
         )
 
@@ -121,10 +122,30 @@ class ProfileAllSerializer(serializers.ModelSerializer):
             'nationality_en',
             'date_of_birth',
             'phone',
-            'german', 
-            'english',
-            
+            'english', 'english_level', 
+            'russian', 'russian_level', 
+            'turkish', 'turkish_level', 
+            'chinese', 'chinese_level',
         )
+
+
+
+class WorkExperienceSerializer(serializers.ModelSerializer):
+    start_date = serializers.DateField(help_text="Дата начала работы")
+    end_date = serializers.DateField(help_text="Дата окончания работы")
+
+    class Meta:
+        model = WorkExperience
+        fields = (
+            'id', 'user', 'company',
+            'type_company','position','start_date','end_date',
+            'description_de','description_ru','description_en',
+            'achievements_de','achievements_ru','achievements_en',
+            'location_city_de','location_city_ru','location_city_en',
+            'location_country_de','location_country_ru','location_country_en',
+            'salary',
+            )
+
 
 
 
@@ -207,27 +228,6 @@ class ReviewSerializer(serializers.ModelSerializer):
             'employer',
             )
 
-
-
-
-class WorkExperienceSerializer(serializers.ModelSerializer):
-    type_company = serializers.ChoiceField(choices=WorkExperience.TYPE_OF_COMPANY_CHOICES, help_text="Тип компании")
-    start_date = serializers.DateField(help_text="Дата начала работы")
-    end_date = serializers.DateField(help_text="Дата окончания работы")
-
-    class Meta:
-        model = WorkExperience
-        fields = (
-            'id', 
-            'user',
-            'type_company', 
-            'company', 
-            'position', 
-            'start_date', 
-            'end_date', 
-            'responsibilities', 
-            'country', 
-        )
 
 
 class WorkScheduleSerializer(serializers.ModelSerializer):

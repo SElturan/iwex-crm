@@ -7,7 +7,7 @@ from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import (exceptions, filters, generics, mixins, status, viewsets)
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, ListCreateAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
@@ -287,3 +287,18 @@ class ProfileListView(ListAPIView):
 
     def get_queryset(self):
         return Profile.objects.all()
+    
+
+
+class WorkexperienceView(ListCreateAPIView):
+    serializer_class = WorkExperienceSerializer
+    filter_fields = ['type_company', ]
+    permission_classes = [IsAuthenticated,IsEmployerPermisson]
+    parser_classes = [MultiPartParser]
+    queryset = WorkExperience.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
