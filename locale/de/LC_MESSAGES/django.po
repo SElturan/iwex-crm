@@ -896,3 +896,9 @@ msgstr "Adresse"
 
 msgid "Текст для футера"
 msgstr "Text in der Fußzeile"
+
+msgid "Дата начала каникул"
+msgstr "Startdatum des Urlaubs"
+
+msgid "Дата конца каникул"
+msgstr "Datum des Endes des Urlaubs"

@@ -42,8 +42,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         if not self.email:
             raise ValueError('User must have an email')
-        # if self.pk is None:  # если это новый объект
-        #     self.set_password(self.password)
+        if self.role:
+            if self.role == 'is_employee':
+                if not hasattr(self, 'profile'):
+                    Profile.objects.create(user=self)
+            elif self.role == 'is_employer':
+                if hasattr(self, 'profile'):
+                    self.profile.delete()
+        else:
+            if hasattr(self, 'profile'):
+                self.profile.delete()
+
         super(User, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):

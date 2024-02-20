@@ -29,6 +29,7 @@ from .serializers import *
 from .filters import ProfileFilter
 from applications.core.models import Vacancy, Invitation
 from .tasks import send_custom_email_task
+from django.db.models import Q, Exists, OuterRef
 
 User = get_user_model()
 
@@ -261,21 +262,36 @@ class ProfileFilterListView(ListAPIView):
         vacancy = get_object_or_404(Vacancy, id=vacancy_id)
 
         profiles_for_vacancy = Profile.objects.annotate(
-            vacancy_language_de=F('german'),
-            vacancy_language_en=F('english')
-        ).filter(
-            vacancy_language_de__gte=vacancy.language_german,
-            vacancy_language_en__gte=vacancy.language_english
+            has_work_experience=Exists(
+                WorkExperience.objects.filter(user=OuterRef('pk'))
+            )
+        #     vacancy_language_de=F('german_level'),
+        #     vacancy_language_en=F('english_level')
+        # ).filter(
+        #     vacancy_language_de__gte=vacancy.language_german,
+        #     vacancy_language_en__gte=vacancy.language_english
+            
         )
-
         invited_users = Invitation.objects.filter(employer__id=employer, vacancy__id=vacancy_id).values_list('user', flat=True)
 
         if vacancy.gender != 'Any':
-            # Если пол важен, фильтруем по указанному полу в вакансии
             profiles_for_vacancy = profiles_for_vacancy.filter(gender_en=vacancy.gender)
+
+        if vacancy.has_experience:
+            profiles_for_vacancy = profiles_for_vacancy.filter(has_work_experience=True)
 
         queryset = profiles_for_vacancy.exclude(id__in=invited_users)
 
+        holiday_start_date = vacancy.holiday_start_date
+        holiday_end_date = vacancy.holiday_end_date
+
+        if holiday_start_date and holiday_end_date:
+            profiles_for_vacancy = profiles_for_vacancy.filter(
+                Q(universities__start_holiday__lte=holiday_start_date, universities__end_holiday__gte=holiday_start_date) |
+                Q(universities__start_holiday__lte=holiday_end_date, universities__end_holiday__gte=holiday_end_date) |
+                Q(universities__start_holiday__gte=holiday_start_date, universities__end_holiday__lte=holiday_end_date)
+            )
+        queryset = profiles_for_vacancy.exclude(id__in=invited_users)
         return queryset
 
 

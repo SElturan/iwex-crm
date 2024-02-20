@@ -75,7 +75,7 @@ class UniversitySerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    universities = UniversitySerializer(many=True, read_only=True)
+    
     class Meta:
         model = Profile
         fields = (
@@ -106,12 +106,16 @@ class ProfileSerializer(serializers.ModelSerializer):
             'russian', 'russian_level', 
             'turkish', 'turkish_level', 
             'chinese', 'chinese_level',
-            'universities',
+            
         )
 
+class VacationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = University
+        fields = ('start_holiday','end_holiday')
 
 class ProfileAllSerializer(serializers.ModelSerializer):
-    
+    universities = VacationsSerializer(many=True, read_only=True)
     class Meta:
         model = Profile
         fields = (
@@ -126,6 +130,7 @@ class ProfileAllSerializer(serializers.ModelSerializer):
             'russian', 'russian_level', 
             'turkish', 'turkish_level', 
             'chinese', 'chinese_level',
+            'universities',
         )
 
 

@@ -155,6 +155,8 @@ class VacancySerializers(serializers.ModelSerializer):
             'gender',
             'time_start', 
             'time_end', 
+            'holiday_start_date',
+            'holiday_end_date',
             'contact_person', 
             'email_info', 
             'phone', 
