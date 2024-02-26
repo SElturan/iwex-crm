@@ -130,11 +130,11 @@ WSGI_APPLICATION = "iwex_crm.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("NAME_DB"),
-        "USER": env("USER_DB"),
-        "PASSWORD": env("PASSWORD_DB"),
-        "HOST": env("HOST_DB"),
-        "PORT": env("PORT_DB"),
+        "NAME": 'joboo',
+        "USER": 'postgres',
+        "PASSWORD": '123',
+        "HOST": '127.0.0.1',
+        "PORT": 5432,
     }
 }
 
