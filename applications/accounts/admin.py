@@ -145,9 +145,12 @@ class PassportAndTermAdmin(admin.ModelAdmin, ExportAdminMixin):
 admin.site.register(PassportAndTerm, PassportAndTermAdmin)
 
 class PaymentAdmin(admin.ModelAdmin, ExportAdminMixin):
-    list_display = ('id', 'user', 'total_amount', 'payment_date',
+    list_display = ('id', 'user', 'total_amount', 'initial_fee','payment_date',
                     'debt','fully_paid', 'payment_accepted')
     list_filter = ('payment_accepted',)
+    list_editable = ['total_amount', 'initial_fee']
+    list_per_page = 2
+    readonly_fields = ['debt', 'fully_paid']
     search_fields = ('user__email',)
     actions = ['export_csv', 'export_xlsx']
     def save_model(self, request, obj, form, change):

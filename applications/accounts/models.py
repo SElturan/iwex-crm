@@ -15,7 +15,7 @@ from applications.accounts.managers import *
 class User(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = (
         (('is_employer'), _('Работодатель')),
-        (('is_employee'), _('Соискатель')),
+        (('is_student'), _('Соискатель')),
     )
 
     email = models.EmailField(_('Email адрес'), unique=True, db_index=True)
@@ -43,7 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         if not self.email:
             raise ValueError('User must have an email')
         if self.role:
-            if self.role == 'is_employee':
+            if self.role == 'is_student':
                 if not hasattr(self, 'profile'):
                     Profile.objects.create(user=self)
             elif self.role == 'is_employer':

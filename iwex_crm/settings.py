@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "applications.core",
     # 'applications.bot',
     "applications.common",
+    "applications.staff",
     "drf_yasg2",
     "rest_framework",
     "rest_framework.authtoken",
