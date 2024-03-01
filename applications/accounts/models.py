@@ -16,6 +16,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = (
         (('is_employer'), _('Работодатель')),
         (('is_student'), _('Соискатель')),
+        (('is_employee'),_('Сотрудник')),
     )
 
     email = models.EmailField(_('Email адрес'), unique=True, db_index=True)

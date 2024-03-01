@@ -406,3 +406,8 @@ class FavoriteSerializers(serializers.ModelSerializer):
                 'user',
             ]
     
+
+class OrderStudentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderStudents
+        fields = '__all__'

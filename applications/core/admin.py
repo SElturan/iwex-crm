@@ -52,7 +52,14 @@ class InvitationAdmin(admin.ModelAdmin):
     class Meta:
         model = Invitation
 
+class OrderStudentsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'employer_sender', 'branch', 'language_german_level', 'language_english_level', 'number_of_students', 'recipient_employee', 'created_date')
+    list_filter = ('branch', 'language_german_level', 'language_english_level', 'created_date')
+    search_fields = ('employer_sender__name', 'branch__name', 'recipient_employee__first_name', 'recipient_employee__last_name')
+    date_hierarchy = 'created_date'
+    readonly_fields = ('created_date',)
 
+admin.site.register(OrderStudents, OrderStudentsAdmin)
 
 
 admin.site.register(Favorite)

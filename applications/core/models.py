@@ -31,6 +31,37 @@ class EmployerCompany(models.Model):
         verbose_name_plural = _('Работодатели')
 
 
+
+class LandName(models.Model):
+    LAND_NAME_CHOICES = (
+        ('Baden-Württemberg', 'Baden-Württemberg'),
+        ('Bavaria', 'Bavaria'),
+        ('Berlin', 'Berlin'),
+        ('Brandenburg', 'Brandenburg'),
+        ('Bremen', 'Bremen'),
+        ('Hamburg', 'Hamburg'),
+        ('Hesse', 'Hesse'),
+        ('Lower Saxony', 'Lower Saxony'),
+        ('Mecklenburg-Vorpommern', 'Mecklenburg-Vorpommern'),
+        ('North Rhine-Westphalia', 'North Rhine-Westphalia'),
+        ('Rhineland-Palatinate', 'Rhineland-Palatinate'),
+        ('Saarland', 'Saarland'),
+        ('Saxony', 'Saxony'),
+        ('Saxony-Anhalt', 'Saxony-Anhalt'),
+        ('Schleswig-Holstein', 'Schleswig-Holstein'),
+        ('Thuringia', 'Thuringia'),
+    )
+    
+    land_name = models.CharField(max_length=100, choices=LAND_NAME_CHOICES)
+
+    def __str__(self):
+        return self.land_name
+    
+    class Meta:
+        verbose_name = _('Федеральная земля Германии')
+        verbose_name_plural = _('Федеральные земли Германии')
+
+
 class Country(models.Model):
     name = models.CharField(max_length=100)
 
@@ -68,6 +99,18 @@ class Branch(models.Model):
         verbose_name_plural = _('Филиалы')
 
 
+class PositionEmployee(models.Model):
+    employer = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('Работодатель'))
+    name = models.CharField(_('Название позиции'), max_length=255)
+
+    def __str__(self):
+        return self.name
+    
+
+    class Meta:
+        verbose_name = _('Позиция работника')
+        verbose_name_plural = _('Позиция работников')
+        
 class Housing(models.Model):
     employer = models.ForeignKey(EmployerCompany, on_delete=models.CASCADE, verbose_name=_('Работодатель'))
     
@@ -228,3 +271,22 @@ class Favorite(models.Model):
         ]
         verbose_name = _('Избранное')
         verbose_name_plural = _('Избранные')
+
+
+class OrderStudents(models.Model):
+
+    employer_sender = models.ForeignKey(EmployerCompany, on_delete=models.CASCADE, verbose_name=_('Работодатель отправитель'), related_name='sent_orders')
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name=_('Филиал'))
+    language_german_level = models.CharField(_('Уровень знания немецкого языка'), max_length=50)
+    language_english_level = models.CharField(_('Уровень знания английского языка'), max_length=50)
+    number_of_students = models.PositiveIntegerField(_('Количество студентов'))
+    recipient_employee = models.ForeignKey('staff.Employee', on_delete=models.CASCADE, verbose_name=_('Сотрудник-получатель'), related_name='received_orders')
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Дата создания'))
+
+
+    def __str__(self):
+        return f"Order for {self.number_of_students} students at {self.branch.name}"
+
+    class Meta:
+        verbose_name = _('Заказ студентов')
+        verbose_name_plural = _('Заказы студентов')

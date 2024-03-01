@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import *
 from rest_framework.routers import DefaultRouter
-
+from rest_framework.response import Response as DRFResponse
 
 # router = DefaultRouter()
 # router.register(r'events', EventViewSet)
@@ -35,5 +35,7 @@ urlpatterns = [
    
     path('favorite-list/', FavoriteListAPIView.as_view(), name='favorite-list'),
     path('favorite-create/', FavoriteAPIView.as_view(), name='favorite-create'),
+    # orderstudents
+    path('order-students/<int:pk>/', OrderStudentsDetailView.as_view(), name='order-students-detail'),
 ]
     

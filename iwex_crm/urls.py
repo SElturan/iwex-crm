@@ -20,9 +20,9 @@ from django.views.i18n import set_language
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Snippets API",
+        title="Joobo-Iwex",
         default_version="v1",
-        description="Test description",
+        description="APIs for Frontend and Mobile",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),
@@ -56,8 +56,7 @@ urlpatterns = [
      path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# handler404 = error_404_page
-# handler500 = error_500_page
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
