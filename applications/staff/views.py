@@ -4,7 +4,7 @@ from .serializers import *
 from ..accounts.models import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import (ListAPIView)
-from applications.core.permissions import IsEmployerPermisson
+from applications.core.permissions import IsEmployerPermission
 from rest_framework import generics, status
 from drf_yasg2.utils import swagger_auto_schema
 from django_filters.rest_framework import DjangoFilterBackend
@@ -41,7 +41,7 @@ class StaffProfileAPIView(generics.RetrieveAPIView):
 
 
 class InterviewsModelViewsets(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployeePermission]
     serializer_class = StaffInterviewsListSerializers
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['vacancy',]
@@ -53,7 +53,7 @@ class InterviewsModelViewsets(viewsets.ModelViewSet):
         return queryset
 
 class InterviewsAPIView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployeePermission]
     serializer_class = StaffInterviewsSerializers
     parser_classes = [MultiPartParser]
 
@@ -81,7 +81,7 @@ class InterviewsAPIView(generics.CreateAPIView):
 
 
 class FavoriteListAPIView(ListAPIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployeePermission]
     serializer_class = StaffFavoriteListSerializer
     parser_classes = [MultiPartParser]
 
@@ -93,7 +93,7 @@ class FavoriteListAPIView(ListAPIView):
 
 
 class FavoriteAPIView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployeePermission]
     serializer_class = StaffFavoriteSerializers
     parser_classes = [MultiPartParser]
 
@@ -125,7 +125,7 @@ class FavoriteAPIView(generics.CreateAPIView):
 
 class OrderStudentsDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StaffOrderStudentsSerializer
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployeePermission]
     parser_classes = [MultiPartParser]
     queryset = OrderStudents.objects.all()
 
@@ -207,7 +207,7 @@ class GetAllProfileDetail(generics.RetrieveAPIView):
     
 
 class EmployerProfileListAPIView(ListAPIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployeePermission]
     serializer_class = StaffEmployerProfileSerializers
 
     def get_queryset(self, *args, **kwargs):
@@ -224,7 +224,7 @@ class EmployerProfileListAPIView(ListAPIView):
 
 class EmployerCompanyAPIView(APIView):
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployeePermission]
 
     @swagger_auto_schema(operation_summary="Получить информацию о работодателя")
     def get(self, request, *args, **kwargs):
@@ -254,7 +254,7 @@ class EmployerCompanyAPIView(APIView):
 class EmployerCompanyUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = StaffEmployerUpdateSerialzers
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployeePermission]
 
     @swagger_auto_schema(
         operation_summary="Обновить информацию  работодателя",

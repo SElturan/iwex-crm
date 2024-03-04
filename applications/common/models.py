@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from ckeditor.fields import RichTextField
+# from ckeditor.fields import RichTextField
 from django.utils.translation import gettext_lazy as _
 
 class SingletonModel(models.Model):
@@ -49,7 +49,7 @@ class FooterLink(models.Model):
     created_at = models.DateTimeField(default=timezone.now, verbose_name=_("Дата создания"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Дата обновления"))
     created_by = models.ForeignKey('accounts.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='created_footer_links', verbose_name=_("Создано пользователем"))
-    text = RichTextField(verbose_name="Текст для футера")
+    # text = RichTextField(verbose_name="Текст для футера")
 
     def str(self):
         return f"Контактная информация для {self.email if self.email else 'Пользователя'}"

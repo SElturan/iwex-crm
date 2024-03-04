@@ -5,7 +5,7 @@ from django_filters import rest_framework as django_filters
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg2.utils import swagger_auto_schema
 from rest_framework import filters, generics, status
-from rest_framework.generics import GenericAPIView, ListAPIView, UpdateAPIView, mixins
+from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
@@ -13,15 +13,16 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
+from .tasks import send_notification
 
 # from schedule.models import Event
 from .models import *
 from .serializers import *
-from .permissions import IsEmployerPermisson
+from .permissions import IsEmployerPermission
 
 
 class EmployerProfileListAPIView(ListAPIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
     serializer_class = EmployerProfileSerializers
 
     def get_queryset(self, *args, **kwargs):
@@ -38,7 +39,7 @@ class EmployerProfileListAPIView(ListAPIView):
 
 class EmployerCompanyAPIView(APIView):
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     @swagger_auto_schema(operation_summary="Получить информацию о работодателя")
     def get(self, request, *args, **kwargs):
@@ -68,7 +69,7 @@ class EmployerCompanyAPIView(APIView):
 class EmployerCompanyUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = EmployerUpdateSerialzers
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     @swagger_auto_schema(
         operation_summary="Обновить информацию  работодателя",
@@ -113,7 +114,7 @@ class CountryListAPIView(ListAPIView):
 
 
 class BranchAPIView(APIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     @swagger_auto_schema(
         operation_summary="создать филиал", request_body=BranchSerializers
@@ -131,7 +132,7 @@ class BranchAPIView(APIView):
 
 
 class BranchUpdateAPIView(APIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     @swagger_auto_schema(
         operation_summary="Обновить информацию о филиале",
@@ -152,7 +153,7 @@ class BranchUpdateAPIView(APIView):
 
 class BranchListAPIView(ListAPIView):
     serializer_class = BranchListSerializers
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     def get_queryset(self):
         user_id = self.request.user.id
@@ -167,7 +168,7 @@ class BranchListAPIView(ListAPIView):
 
 
 class BranchDetailListAPIView(ListAPIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
     serializer_class = BranchSerializers
 
     def get_queryset(self):
@@ -213,7 +214,7 @@ class HousingAPIView(APIView):
 
 
 class VacancyCreateAPIView(APIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     @swagger_auto_schema(
         operation_summary="Создать новую вакансию и связать ее с компанией и филиалом",
@@ -251,7 +252,7 @@ class VacancyCreateAPIView(APIView):
 
 
 class VacancyUpdateAPIView(APIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     @swagger_auto_schema(
         operation_summary="Обновить информацию о вакансии",
@@ -293,9 +294,8 @@ class VacancyListAPIView(ListAPIView):
 
 class VacancyDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    @swagger_auto_schema(
-        operation_summary="Получить детали конкретной вакансии"
-    )
+
+    @swagger_auto_schema(operation_summary="Получить детали конкретной вакансии")
     def get(self, request, *args, **kwargs):
         vacancy_id = kwargs["pk"]
         vacancy = (
@@ -317,9 +317,9 @@ class VacancyDetailAPIView(APIView):
 
 
 class EmployerVacancyListAPIView(ListAPIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
     serializer_class = VacancyListSerializers
-    
+
     def get_queryset(self):
         user_id = self.request.user.id
 
@@ -329,6 +329,7 @@ class EmployerVacancyListAPIView(ListAPIView):
             "branch",
         )
         return queryset
+
     @swagger_auto_schema(
         operation_summary="Получить список вакансий для текущего работодателя"
     )
@@ -337,7 +338,8 @@ class EmployerVacancyListAPIView(ListAPIView):
 
 
 class InvitationAPIView(APIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
+
     @swagger_auto_schema(
         operation_summary="Получить список приглашений для текущего работодателя"
     )
@@ -355,7 +357,10 @@ class InvitationAPIView(APIView):
         )
         return Response(serializer.data)
 
-    @swagger_auto_schema(operation_summary="Создать новое приглашение",request_body=InvitationSerializers)
+    @swagger_auto_schema(
+        operation_summary="Создать новое приглашение",
+        request_body=InvitationSerializers,
+    )
     def post(self, request, *args, **kwargs):
         serializer = InvitationSerializers(data=request.data)
         if serializer.is_valid():
@@ -389,13 +394,13 @@ class InvitationAPIView(APIView):
 
 
 class InterviewsModelViewsets(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
     serializer_class = InterviewsListSerializers
     filter_backends = [DjangoFilterBackend]
     filterset_fields = [
         "vacancy",
     ]
-    
+
     def get_queryset(self):
         user_id = self.request.user.id
         queryset = Interviews.objects.filter(employer__user__id=user_id).select_related(
@@ -403,7 +408,7 @@ class InterviewsModelViewsets(viewsets.ModelViewSet):
             "user",
         )
         return queryset
-    
+
     @swagger_auto_schema(
         operation_summary="Получить список собеседование для текущего работодателя"
     )
@@ -412,10 +417,13 @@ class InterviewsModelViewsets(viewsets.ModelViewSet):
 
 
 class InterviewsAPIView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
     serializer_class = InterviewsSerializers
 
-    @swagger_auto_schema(operation_summary="Создать новое собеседования",request_body=InterviewsSerializers)
+    @swagger_auto_schema(
+        operation_summary="Создать новое собеседования",
+        request_body=InterviewsSerializers,
+    )
     def post(self, request, *args, **kwargs):
         serializer = InterviewsSerializers(data=request.data)
         if serializer.is_valid():
@@ -449,15 +457,16 @@ class InterviewsAPIView(generics.CreateAPIView):
 
 
 class FavoriteListAPIView(ListAPIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
     serializer_class = FavoriteListSerializers
-    
+
     def get_queryset(self):
         user_id = self.request.user.id
         queryset = Favorite.objects.filter(employer__user__id=user_id).select_related(
             "user",
         )
         return queryset
+
     @swagger_auto_schema(
         operation_summary="Получить список избранных пользователей для текущего работодателя"
     )
@@ -466,11 +475,10 @@ class FavoriteListAPIView(ListAPIView):
 
 
 class FavoriteAPIView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
     serializer_class = FavoriteSerializers
-    @swagger_auto_schema(
-        operation_summary="Добавить пользователя в избранное"
-    )
+
+    @swagger_auto_schema(operation_summary="Добавить пользователя в избранное")
     def post(self, request, *args, **kwargs):
         user_id = request.user.id
         serializer = self.get_serializer(data=request.data)
@@ -493,7 +501,7 @@ class FavoriteAPIView(generics.CreateAPIView):
 
 class OrderStudentsDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OrderStudentsSerializer
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
     parser_classes = [MultiPartParser]
     queryset = OrderStudents.objects.all()
 
@@ -508,4 +516,17 @@ class OrderStudentsDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
-    
+
+
+class NotificationAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        email = request.data.get("email")
+        message = request.data.get("message")
+        if email and message:
+            send_notification.delay(email, message)  # Запуск задачи Celery
+            return Response({"success": True}, status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {"error": "Email and message are required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )

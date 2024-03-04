@@ -28,8 +28,8 @@ from drf_yasg2.utils import swagger_auto_schema
 from random import randint
 from django.shortcuts import get_object_or_404
 from django.db.models import F
-from .permissions import IsEmployeePermisson
-from applications.core.permissions import IsEmployerPermisson
+from .permissions import IsEmployeePermission
+from applications.core.permissions import IsEmployerPermission
 from .serializers import *
 from .filters import ProfileFilter
 from applications.core.models import Vacancy, Invitation
@@ -269,7 +269,7 @@ class AccessTokenView(ObtainAuthToken):
 
 class ProfileDetailView(ListAPIView):
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     def get_queryset(self):
         profile_id = self.kwargs["id"]
@@ -282,7 +282,7 @@ class ProfileDetailView(ListAPIView):
 
 class ProfileFilterListView(ListAPIView):
     serializer_class = ProfileAllSerializer
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     def get_queryset(self):
         vacancy_id = self.kwargs.get("pk")
@@ -340,7 +340,7 @@ class ProfileFilterListView(ListAPIView):
 
 class ProfileListView(ListAPIView):
     serializer_class = ProfileAllSerializer
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filter_fields = [
         "gender_en",
@@ -362,7 +362,7 @@ class WorkexperienceView(ListCreateAPIView):
     filter_fields = [
         "type_company",
     ]
-    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
     parser_classes = [MultiPartParser]
     queryset = WorkExperience.objects.all()
 
