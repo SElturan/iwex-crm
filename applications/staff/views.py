@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import (ListAPIView)
 from applications.core.permissions import IsEmployerPermission
 from rest_framework import generics, status
-from drf_yasg2.utils import swagger_auto_schema
+# from drf_yasg2.utils import swagger_auto_schema
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.parsers import  MultiPartParser
@@ -59,7 +59,7 @@ class InterviewsAPIView(generics.CreateAPIView):
 
 
 
-    @swagger_auto_schema(request_body=StaffInterviewsSerializers)
+    # @swagger_auto_schema(request_body=StaffInterviewsSerializers)
     def post(self, request, *args, **kwargs):
         serializer = StaffInterviewsSerializers(data=request.data)
         if serializer.is_valid():
@@ -215,9 +215,9 @@ class EmployerProfileListAPIView(ListAPIView):
         queryset = EmployerCompany.objects.filter(user__id=user_id)
         return queryset
 
-    @swagger_auto_schema(
-        operation_summary="Возвращает профили работодателей, связанные с текущим пользователем"
-    )
+    # @swagger_auto_schema(
+    #     operation_summary="Возвращает профили работодателей, связанные с текущим пользователем"
+    # )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
@@ -226,7 +226,7 @@ class EmployerCompanyAPIView(APIView):
     parser_classes = (MultiPartParser, FormParser)
     permission_classes = [IsAuthenticated, IsEmployeePermission]
 
-    @swagger_auto_schema(operation_summary="Получить информацию о работодателя")
+    # @swagger_auto_schema(operation_summary="Получить информацию о работодателя")
     def get(self, request, *args, **kwargs):
         user_id = request.user.id
 
@@ -236,10 +236,10 @@ class EmployerCompanyAPIView(APIView):
         )
         return Response(serializer.data)
 
-    @swagger_auto_schema(
-        operation_summary="Создать новую работодателя",
-        request_body=StaffEmployerCompanySerialzers,
-    )
+    # @swagger_auto_schema(
+    #     operation_summary="Создать новую работодателя",
+    #     request_body=StaffEmployerCompanySerialzers,
+    # )
     def post(self, request, *args, **kwargs):
         serializer = StaffEmployerCompanySerialzers(data=request.data)
 
@@ -256,10 +256,10 @@ class EmployerCompanyUpdateView(generics.RetrieveUpdateAPIView):
     parser_classes = (MultiPartParser, FormParser)
     permission_classes = [IsAuthenticated, IsEmployeePermission]
 
-    @swagger_auto_schema(
-        operation_summary="Обновить информацию  работодателя",
-        request_body=StaffEmployerUpdateSerialzers,
-    )
+    # @swagger_auto_schema(
+    #     operation_summary="Обновить информацию  работодателя",
+    #     request_body=StaffEmployerUpdateSerialzers,
+    # )
     def patch(self, request, *args, **kwargs):
         user_id = request.user.id
         user = User.objects.get(id=user_id)
@@ -274,14 +274,14 @@ class EmployerCompanyUpdateView(generics.RetrieveUpdateAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(operation_summary="Получить информацию работодателя")
+    # @swagger_auto_schema(operation_summary="Получить информацию работодателя")
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
-    @swagger_auto_schema(
-        operation_summary="Изменить информацию работодателя",
-        request_body=StaffEmployerUpdateSerialzers,
-    )
+    # @swagger_auto_schema(
+    #     operation_summary="Изменить информацию работодателя",
+    #     request_body=StaffEmployerUpdateSerialzers,
+    # )
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 

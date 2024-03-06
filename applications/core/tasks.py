@@ -1,14 +1,19 @@
 # tasks.py
+from applications.staff.models import Employee
 from celery import shared_task
 from django.core.mail import send_mail
+from .models import EmployerCompany
+
+
+
 
 @shared_task
-def send_notification(email, message):
-    """
-    Функция для отправки уведомления на email.
-    """
-    subject = 'Уведомление'
-    message = f'Уведомление: {message}'
-    from_email = 'your_email@example.com'  # Укажите ваш адрес электронной почты
-    to_email = [email]
-    send_mail(subject, message, from_email, to_email)
+def send_employee_notification(employee_id):
+    # Получить объект сотрудника по его идентификатору
+    employee = Employee.objects.get(pk=employee_id)
+
+    # Получить объект работодателя
+    employer = EmployerCompany.objects.first()  # Предположим, что здесь есть логика выбора работодателя
+
+    # Отправить уведомление работодателю
+    print(f"Уведомление отправлено работодателю {employer} о новом сотруднике {employee}")

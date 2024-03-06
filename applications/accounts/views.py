@@ -14,7 +14,7 @@ from rest_framework.generics import (
     ListCreateAPIView,
 )
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.parsers import  MultiPartParser
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
@@ -24,7 +24,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
 
-from drf_yasg2.utils import swagger_auto_schema
+
 from random import randint
 from django.shortcuts import get_object_or_404
 from django.db.models import F
@@ -42,7 +42,7 @@ User = get_user_model()
 class RegistrationAPIView(generics.CreateAPIView):
     serializer_class = RegistrationSerializer  # Используйте свой сериализатор
 
-    @swagger_auto_schema(operation_summary="Регистрация нового пользователя")
+    # @swagger_auto_schema(operation_summary="Регистрация нового пользователя")
     def post(self, request, *args, **kwargs):
         email = request.data.get("email")
         user = User.objects.filter(email=email).first()
@@ -100,7 +100,7 @@ class RegistrationAPIView(generics.CreateAPIView):
 
 class ResetPasswordAPIView(APIView):
 
-    @swagger_auto_schema(operation_summary="Сброс пароля пользователя")
+    # @swagger_auto_schema(operation_summary="Сброс пароля пользователя")
     def post(self, request, *args, **kwargs):
         email = request.data.get("email")
         user = User.objects.filter(email=email).first()
@@ -129,10 +129,10 @@ class ResetPasswordAPIView(APIView):
 class VerifyEmailAPIView(APIView):
     serializer_class = VerifyEmailSerializer
 
-    @swagger_auto_schema(
-        operation_summary="Подтверждение электронной почты пользователя",
-        request_body=VerifyEmailSerializer,
-    )
+    # @swagger_auto_schema(
+    #     operation_summary="Подтверждение электронной почты пользователя",
+    #     request_body=VerifyEmailSerializer,
+    # )
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
@@ -171,10 +171,10 @@ class VerifyEmailAPIView(APIView):
 class SetPasswordAPIView(APIView):
     serializer_class = SetPasswordSerializer
 
-    @swagger_auto_schema(
-        operation_summary="Установка нового пароля пользователя",
-        request_body=SetPasswordSerializer,
-    )
+    # @swagger_auto_schema(
+    #     operation_summary="Установка нового пароля пользователя",
+    #     request_body=SetPasswordSerializer,
+    # )
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
 
@@ -215,7 +215,7 @@ class SetPasswordAPIView(APIView):
 class UserLoginView(generics.GenericAPIView):
     serializer_class = UserLoginSerializer
 
-    @swagger_auto_schema(operation_summary="Вход пользователя в систему")
+    # @swagger_auto_schema(operation_summary="Вход пользователя в систему")
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -254,7 +254,7 @@ class UserLoginView(generics.GenericAPIView):
 class AccessTokenView(ObtainAuthToken):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(operation_summary="Получение доступного токена")
+    # @swagger_auto_schema(operation_summary="Получение доступного токена")
     def post(self, request, *args, **kwargs):
         user = request.user
         return Response(
@@ -275,9 +275,6 @@ class ProfileDetailView(ListAPIView):
         profile_id = self.kwargs["id"]
         return Profile.objects.filter(id=profile_id)
 
-    @swagger_auto_schema(operation_summary="Получить детали профиля")
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
 
 
 class ProfileFilterListView(ListAPIView):
@@ -333,7 +330,7 @@ class ProfileFilterListView(ListAPIView):
         queryset = profiles_for_vacancy.exclude(id__in=invited_users)
         return queryset
 
-    @swagger_auto_schema(operation_summary="Получить список профилей с фильтрами")
+    # @swagger_auto_schema(operation_summary="Получить список профилей с фильтрами")
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
@@ -352,7 +349,7 @@ class ProfileListView(ListAPIView):
     def get_queryset(self):
         return Profile.objects.all()
 
-    @swagger_auto_schema(operation_summary="Получить список профилей")
+    # @swagger_auto_schema(operation_summary="Получить список профилей")
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
@@ -366,10 +363,10 @@ class WorkexperienceView(ListCreateAPIView):
     parser_classes = [MultiPartParser]
     queryset = WorkExperience.objects.all()
 
-    @swagger_auto_schema(operation_summary="Получить и создать опыт работы")
+    # @swagger_auto_schema(operation_summary="Получить и создать опыт работы")
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
-    @swagger_auto_schema(operation_summary="Создать опыт работы")
+    # @swagger_auto_schema(operation_summary="Создать опыт работы")
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)

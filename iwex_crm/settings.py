@@ -52,8 +52,6 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     "smart_selects",
     "rangefilter",
-    # 'applications.apps.SuitConfig',
-    # 'applications.apps.JazzminConfig',
     "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -64,20 +62,25 @@ INSTALLED_APPS = [
     # 'schedule',
     "easy_thumbnails",
     "storages",
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     "applications.accounts",
     "applications.core",
     # 'applications.bot',
+    # 'appiclations.chat',
     "applications.common",
     "applications.staff",
-    "drf_yasg2",
+    # "drf_yasg2",
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "corsheaders",
     "import_export",
+    'channels',
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
@@ -107,7 +110,7 @@ ROOT_URLCONF = env.str("ROOT_URLCONF")
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -266,7 +269,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
 JAZZMIN_UI_TWEAKS = JAZZMIN_UI_TWEAKS
-
+ASGI_APPLICATION = 'iwex_crm.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=60),
