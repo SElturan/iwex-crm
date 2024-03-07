@@ -82,8 +82,6 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.BasicAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
@@ -216,14 +214,14 @@ USE_TZ = env.bool("USE_TZ")
 
 
 # GMAIL SMTP
-EMAIL_BACKEND = env.str("EMAIL_BACKEND")
-EMAIL_HOST = env.str("EMAIL_HOST")
-EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
-EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
-EMAIL_PORT = env.int("EMAIL_PORT")
-EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
-EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL")
-DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL")
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_PASSWORD = "qekmdbxeartasrox"
+EMAIL_HOST_USER = "kairat.talant.2001@gmail.com"
+EMAIL_PORT =  587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = "IWEX <kairat.talant.2001@gmail.com>"
 
 default_app_config = "applications.core.apps.CoreConfig"
 
