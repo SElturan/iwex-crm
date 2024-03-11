@@ -13,7 +13,6 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-# from .tasks import send_notification
 
 # from schedule.models import Event
 from .models import *
@@ -423,10 +422,6 @@ class InterviewsAPIView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, IsEmployerPermission]
     serializer_class = InterviewsSerializers
 
-    # @swagger_auto_schema(
-    #     operation_summary="Создать новое собеседования",
-    #     request_body=InterviewsSerializers,
-    # )
     def post(self, request, *args, **kwargs):
         serializer = InterviewsSerializers(data=request.data)
         if serializer.is_valid():
