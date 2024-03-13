@@ -80,7 +80,7 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
@@ -131,10 +131,10 @@ WSGI_APPLICATION = "iwex_crm.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": 'joboo',
-        "USER": 'postgres',
-        "PASSWORD": '123',
-        "HOST": '127.0.0.1',
+        "NAME": "joboo",
+        "USER": "postgres",
+        "PASSWORD": "123",
+        "HOST": "127.0.0.1",
         "PORT": 5432,
     }
 }
@@ -215,13 +215,14 @@ USE_TZ = env.bool("USE_TZ")
 
 # GMAIL SMTP
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_PASSWORD = "qekmdbxeartasrox"
-EMAIL_HOST_USER = "kairat.talant.2001@gmail.com"
-EMAIL_PORT =  587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-DEFAULT_FROM_EMAIL = "IWEX <kairat.talant.2001@gmail.com>"
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_HOST_PASSWORD = "kakyfselbpestpxh"
+EMAIL_HOST_USER = "kairat.melisov.2001@yandex.ru"
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
 
 default_app_config = "applications.core.apps.CoreConfig"
 
