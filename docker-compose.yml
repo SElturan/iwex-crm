@@ -1,0 +1,75 @@
+version: '3'
+services:
+  db:
+    image: postgres:15
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${NAME_DB}
+      POSTGRES_USER: ${USER_DB}
+      POSTGRES_PASSWORD: ${PASSWORD_DB}
+    restart: always
+    ports:
+      - "5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+
+
+  app:
+    build: . 
+    restart: always
+    command: bash -c "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8005"
+    ports:
+      - "8005:8005"
+    env_file:
+      - .env
+    depends_on:
+
+      - db 
+
+    volumes:
+      - .:/app
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: always
+
+  celery:
+    build: .
+    command: bash -c "celery -A iwex_crm worker -l info"
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+      - app
+    volumes:
+      - .:/app
+
+  channels:
+    build: .
+    command: bash -c "daphne iwex_crm.asgi:application -b 0.0.0.0 -p 8001"
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+      - app
+    ports:
+      - "8001:8001"
+
+    volumes:
+      - .:/app
+    
+
+volumes:
+  pgdata:
+  project:
+  redis-data:
