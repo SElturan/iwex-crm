@@ -75,6 +75,7 @@ class UserAdmin(ExportAdminMixin, BaseUserAdmin):
         model = User
 
 font_path = os.path.join(settings.BASE_DIR, 'static', 'fonts', 'timesnewromanpsmt.ttf')
+
 class UniversityAdmin(admin.ModelAdmin, ExportAdminMixin):
     list_display = ('id', 'user', 'name_ru', 'degree_type_ru', 'faculty_ru', 'kurs_year')
     search_fields = ['user__email', 'name_ru']
@@ -116,7 +117,6 @@ class UniversityAdmin(admin.ModelAdmin, ExportAdminMixin):
     export_pdf.short_description = "Export to PDF"
 
 admin.site.register(University, UniversityAdmin)
-
 
 class UniversityInline(admin.StackedInline):  
     model = University

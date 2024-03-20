@@ -363,6 +363,7 @@ class InterviewsListSerializers(serializers.ModelSerializer):
             'users',
             'created_date',
             'interviews_date',
+            'is_accepted',
         ]
 
     def get_created_date(self, obj):

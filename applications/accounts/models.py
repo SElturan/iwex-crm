@@ -68,7 +68,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _('Пользователи')
 
 
-
 class Profile(models.Model):
 
     GENDER_CHOICES_RU = (

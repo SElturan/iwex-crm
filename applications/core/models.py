@@ -5,6 +5,7 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 
+
 class EmployerCompany(models.Model):
     first_name = models.CharField(_('Имя'), max_length=50, )
     last_name = models.CharField(_('Фамилия'), max_length=50,)
