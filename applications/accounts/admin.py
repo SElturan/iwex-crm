@@ -92,7 +92,6 @@ class WorkExperienceAdmin(admin.ModelAdmin):
         (None, {'fields': ('user', )}),
         ('Details', {'fields': ('company', 'type_company', 'position',)}),
         ('Worktime', {'fields': ('start_date', 'end_date',)}),
-        ('Important dates', {'fields': ('responsibilities', 'country',)}),
     )
 
 

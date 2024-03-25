@@ -275,27 +275,27 @@ class ProfileFilterListView(ListAPIView):
         if vacancy.gender != "Any":
             profiles_for_vacancy = profiles_for_vacancy.filter(gender_en=vacancy.gender)
 
-        if vacancy.has_experience:
+        if vacancy.experience:
             profiles_for_vacancy = profiles_for_vacancy.filter(has_work_experience=True)
 
         queryset = profiles_for_vacancy.exclude(id__in=invited_users)
 
-        holiday_start_date = vacancy.holiday_start_date
-        holiday_end_date = vacancy.holiday_end_date
+        start_holidays_date = vacancy.start_holidays_date
+        end_holidays_date = vacancy.end_holidays_date
 
-        if holiday_start_date and holiday_end_date:
+        if start_holidays_date and end_holidays_date:
             profiles_for_vacancy = profiles_for_vacancy.filter(
                 Q(
-                    universities__start_holiday__lte=holiday_start_date,
-                    universities__end_holiday__gte=holiday_start_date,
+                    universities__start_holiday__lte=start_holidays_date,
+                    universities__end_holiday__gte=start_holidays_date,
                 )
                 | Q(
-                    universities__start_holiday__lte=holiday_end_date,
-                    universities__end_holiday__gte=holiday_end_date,
+                    universities__start_holiday__lte=end_holidays_date,
+                    universities__end_holiday__gte=end_holidays_date,
                 )
                 | Q(
-                    universities__start_holiday__gte=holiday_start_date,
-                    universities__end_holiday__lte=holiday_end_date,
+                    universities__start_holiday__gte=start_holidays_date,
+                    universities__end_holiday__lte=end_holidays_date,
                 )
             )
         queryset = profiles_for_vacancy.exclude(id__in=invited_users)
