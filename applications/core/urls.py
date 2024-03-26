@@ -17,9 +17,6 @@ urlpatterns = [
     path('branch-list/', BranchListAPIView.as_view(), name='branchlist'),
     path('branch-detail/', BranchDetailListAPIView.as_view(), name='branchlistdetail'),
     
-
-
-
     path('vacancy-create/', VacancyCreateAPIView.as_view(), name='vacancycreate'),
     path('vacancy-update/<int:pk>/', VacancyUpdateAPIView.as_view(), name='vacancyupdate'),
     path('vacancy-list/', VacancyListAPIView.as_view(), name='vacancylist'),

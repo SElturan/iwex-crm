@@ -199,6 +199,7 @@ class VacancyCreateAPIView(APIView):
             'branch': branch.name,
             'employee_count': serializer.data['employee_count'],
             'branch_id': branch.id,
+            
         }
 
         # Сохраняем уведомление в модель Notification
