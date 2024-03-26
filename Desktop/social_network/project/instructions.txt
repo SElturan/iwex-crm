@@ -1,0 +1,7 @@
+Google registation -  https://console.cloud.google.com/apis/credentials/
+
+directory - oauth / templates oauth
+
+settings - installed apps, urls
+pip install google-auth
+pip install PyJWT - создаем токеты наших пользователей

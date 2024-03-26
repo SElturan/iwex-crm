@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %} CELERY {% endblock %}
+
+{% block content %}
+    <h1>CELERY tasks</h1>
+<!--
+    {% if form.errors %}
+        <p>Your form has errors.</p>
+    {% endif %} -->
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

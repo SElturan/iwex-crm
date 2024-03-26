@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+<h1>My First Template</h1>
+
+{% block content %}
+    <h1>My First Template</h1>
+    <p>Current time:</p>
+    {% for post in posts %}
+        <a href="{% url 'post_detail' post.id %}">{{ post.name }}</a>
+        <p>{{ post.id }}</p>
+        <p>{{ post.author }}</p>
+        <p>{{ post.content }}</p>
+        <p>{{ post.image }}</p>
+        <p>{{ post.created_at }}</p>
+        <p>{{ post.updated_at }}</p>
+        <br>
+        <br>
+        <br>
+    {% endfor %}
+{% endblock %}
+
+
+
