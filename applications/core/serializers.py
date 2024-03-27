@@ -181,6 +181,7 @@ class VacancySerializers(serializers.ModelSerializer):
     class Meta:
         model = Vacancy
         fields = [
+            'id',
             'branch',
             'position', 
             'duty', 

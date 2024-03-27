@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.parsers import FormParser, MultiPartParser
 
 from random import randint
 from django.shortcuts import get_object_or_404
@@ -21,6 +21,7 @@ from .serializers import *
 from applications.core.models import Vacancy, Invitation
 from .tasks import send_custom_email_task
 from django.db.models import Q, Exists, OuterRef
+from applications.core.models import EmployerCompany
 
 User = get_user_model()
 
@@ -220,16 +221,22 @@ class UserLoginView(generics.GenericAPIView):
 
 class AccessTokenView(ObtainAuthToken):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request, *args, **kwargs):
         user = request.user  
+        employer_company = EmployerCompany.objects.filter(user=user).first()
+        
+        is_profile = True if employer_company else False
+
         return Response({
             "status": status.HTTP_200_OK,
             "id": user.id,
             "email": user.email, 
             "role": user.role,
+            "is_profile": is_profile,
         })
-    
+
 
 
 

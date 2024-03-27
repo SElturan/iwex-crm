@@ -44,7 +44,8 @@ class InterviewsConsumer(AsyncWebsocketConsumer):
             'message': notification.data, 
             'read': notification.read,
             'notification_date': notification.created_at.strftime('%Y-%m-%d %H:%M'),
-            'unread_count': self.unread_count
+            'unread_count': self.unread_count,
+            'type_notification': notification.type_notification,
 
             }))
 
