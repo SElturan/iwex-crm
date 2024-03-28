@@ -152,8 +152,8 @@ class Profile(models.Model):
 
         ]
 
-        verbose_name = _('Профиль соискателя')
-        verbose_name_plural = _('Профили соискателей')
+        verbose_name = _('соискатель')
+        verbose_name_plural = _('соискатели')
 
 
 

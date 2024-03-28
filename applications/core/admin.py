@@ -5,7 +5,7 @@ from .models import *
 from applications.staff.models import Notification
 
 class EmployerCompanyAdmin(admin.ModelAdmin):
-    list_display = ['id','user','first_name','last_name','name','iin','description','icon',]
+    list_display = ['id','user','first_name','last_name','name','iin']
     search_fields = ['user','first_name','last_name','name','iin','description','icon',]
 
     ordering = ('id',)

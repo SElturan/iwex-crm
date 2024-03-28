@@ -192,8 +192,8 @@ class Invitation(models.Model):
             models.Index(fields=['vacancy',]),
             models.Index(fields=['user',]),
         ]
-        verbose_name = _('Приглашение на вакансию')
-        verbose_name_plural = _('Приглашения на вакансии')
+        verbose_name = _('Приглашение')
+        verbose_name_plural = _('Приглашения')
 
 
 class Interviews(models.Model):
