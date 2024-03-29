@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
+from rest_framework.generics import DestroyAPIView
 # from schedule.models import Event
 from .models import *
 from .serializers import *
@@ -246,7 +247,14 @@ class VacancyListAPIView(ListAPIView):
         queryset = Vacancy.objects.all().select_related('employer_company', 'branch', )
         return queryset
     
+class VacancyDestroyView(DestroyAPIView):
+    permission_classes = [IsAuthenticated, IsEmployerPermission]
 
+    def delete(self, request, *args, **kwargs):
+        vacancy_id = kwargs['pk']
+        vacancy = Vacancy.objects.get(id=vacancy_id)
+        vacancy.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class VacancyDetailAPIView(APIView):

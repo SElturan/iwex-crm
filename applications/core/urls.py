@@ -22,6 +22,7 @@ urlpatterns = [
     path('vacancy-list/', VacancyListAPIView.as_view(), name='vacancylist'),
     path('vacancy-detail/<int:pk>/', VacancyDetailAPIView.as_view(), name='vacancydetail'),
     path('vacancy-employer/', EmployerVacancyListAPIView.as_view(), name='vacancy-employer'),
+    path('vacancy-delete/<int:pk>/', VacancyDestroyView.as_view(), name='vacancydelete'),
 
     path('invitation/', InvitationAPIView.as_view(), name='invitation'),
 
