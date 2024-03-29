@@ -238,6 +238,7 @@ class VacancyUpdateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class VacancyListAPIView(ListAPIView):
     serializer_class = VacancyListSerializers
     filter_backends = [filters.SearchFilter]

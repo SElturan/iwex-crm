@@ -11,4 +11,6 @@ urlpatterns = [
   path('employer/company/vs/<int:pk>/', EmployerCompanyStaffView.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='employer-company-detail'),
   # interiew
   path('interview-vacancies/interviews/', InterviewsListAPIView.as_view(), name='interviews-list'),
+  path('profiles/', ProfileListCreateAPIView.as_view(), name='profile-list-create'),
+  path('profiles/<int:pk>/', ProfileRetrieveUpdateDestroyAPIView.as_view(), name='profile-detail'),
 ]

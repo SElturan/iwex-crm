@@ -22,6 +22,7 @@ from .permissions import IsEmployeePermission
 
 from applications.staff.permissions import IsEmployeePermission
 from applications.core.serializers import *
+from applications.accounts.serializers import *
 
 
 
@@ -84,7 +85,19 @@ class InterviewsListAPIView(generics.ListAPIView):
         """
         return Interviews.objects.all()
 
+class ProfileListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated, IsEmployeePermission]
+    parser_classes = (MultiPartParser, FormParser)
+    filter_backends = [DjangoFilterBackend]
 
+
+class ProfileRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsEmployeePermission]
+    parser_classes = (MultiPartParser, FormParser)
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
 # class EmployerCompanyStaffView(generics.RetrieveAPIView):
 #     permission_classes = [IsAuthenticated, IsEmployeePermission]

@@ -220,7 +220,6 @@ class VacancySerializers(serializers.ModelSerializer):
         instance.time_start = validated_data.get('time_start', instance.time_start)
         instance.time_end = validated_data.get('time_end', instance.time_end)
         instance.salary = validated_data.get('salary', instance.salary)
-        instance.increase_choices = validated_data.get('increase_choices', instance.increase_choices)
         instance.description = validated_data.get('description', instance.description)
         instance.start_holidays_date = validated_data.get('start_holidays_date', instance.start_holidays_date)
         instance.end_holidays_date = validated_data.get('end_holidays_date', instance.end_holidays_date)

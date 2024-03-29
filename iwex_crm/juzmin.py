@@ -96,19 +96,19 @@ JAZZMIN_SETTINGS = {
         "Accounts.Rating":"fas fa-star",
         "Accounts.Review":"fas fa-pen-alt",
         "Accounts.WorkExperience":"fas fa-briefcase",
+        "Chat": "fas fa-comments",
         "Chat.Chat": "fas fa-comment-dots",
-        "Common": "fas fa-wrench",
-        "Common.SiteSettings": "fas fa-cogs",
-        "Common.FooterLink": "fas fa-info-circle",
         "Core": "fas fa-globe",
         "Core.Vacancy": "fas fa-suitcase",
         "Core.EmployerCompany": "fas fa-users",
-        "Core.City":"fas fa-city",
         "Core.Housing":"fas fa-home",
         "Core.Branch":"fas fa-code-branch",
-        "Core.PositionEmployee":"fas fa-user-tie",
         "Core.Invitation":"fas fa-handshake",
-        "Core.ReviewBranch":"fas fa-comment"
+        "Core.Favorite":"fas fa-heart",
+        "Core.Interviews":"fas fa-calendar-alt",
+        "Staff": "fas fa-user-tie",
+        "Staff.Notification": "fas fa-bell",
+
        
     },
     # Icons that are used when one is not manually specified
