@@ -242,7 +242,7 @@ class AccessTokenView(ObtainAuthToken):
 
 class ProfileDetailView(ListAPIView):
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated, IsEmployerPermission]
+    # permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     def get_queryset(self):
         profile_id = self.kwargs['id']
@@ -257,7 +257,7 @@ class ProfileDetailView(ListAPIView):
 
 class ProfileFilterListView(ListAPIView):
     serializer_class = ProfileAllSerializer
-    permission_classes = [IsAuthenticated, IsEmployerPermission]
+    # permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     def get_queryset(self):
         vacancy_id = self.kwargs.get("pk")
@@ -316,7 +316,7 @@ class ProfileFilterListView(ListAPIView):
 
 class ProfileListView(ListAPIView):
     serializer_class = ProfileAllSerializer
-    permission_classes = [IsAuthenticated, IsEmployerPermission]
+    # permission_classes = [IsAuthenticated, IsEmployerPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filter_fields = ['gender_en', 'nationality_en', 'german', 'english',]
 
