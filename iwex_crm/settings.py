@@ -252,7 +252,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Настройки для медиа-файлов
-MEDIA_URL = 'https://crm.iwex.kg/media/'
+MEDIA_URL = 'https://backcrm.iwex.kg/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
@@ -271,7 +271,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [('redis', 6379)],
         },
     },
 }
@@ -282,4 +282,4 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-CSRF_TRUSTED_ORIGINS = ['https://crm.iwex.kg']
+CSRF_TRUSTED_ORIGINS = ['https://backcrm.iwex.kg']

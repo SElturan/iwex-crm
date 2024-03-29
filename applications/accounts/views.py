@@ -257,7 +257,7 @@ class ProfileDetailView(ListAPIView):
 
 class ProfileFilterListView(ListAPIView):
     serializer_class = ProfileAllSerializer
-    permission_classes = [IsAuthenticated, IsEmployerPermission]
+    # permission_classes = [IsAuthenticated, IsEmployerPermission]
 
     def get_queryset(self):
         vacancy_id = self.kwargs.get("pk")
